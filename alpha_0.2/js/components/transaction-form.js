@@ -3,6 +3,7 @@ import { icon } from '../icons.js';
 import { escapeHtml, formatAmountInput, parseAmount, todayISO, isValidISO } from '../utils.js';
 import { openModal, confirmDialog } from './modal.js';
 import { toast } from './ui.js';
+import { openCategoryModal } from './category-form.js';
 
 /** Modal de criar/editar transação. `tx` nulo = nova transação. */
 export function openTransactionModal(tx = null, defaults = {}) {
@@ -68,13 +69,23 @@ export function openTransactionModal(tx = null, defaults = {}) {
         picker.innerHTML = cats
           .map((c) => `<button type="button" class="cat-option${c.id === categoryId ? ' selected' : ''}" data-cat="${escapeHtml(c.id)}" style="--c:${escapeHtml(c.color)}">
               <span class="tx-icon">${icon(c.icon, 18)}</span><span>${escapeHtml(c.name)}</span></button>`)
-          .join('');
+          .join('')
+          + `<button type="button" class="cat-option cat-add" data-add-cat>
+              <span class="tx-icon">${icon('plus', 18)}</span><span>Nova categoria</span></button>`;
       }
 
       el.querySelectorAll('[data-type]').forEach((b) =>
         b.addEventListener('click', () => { type = b.dataset.type; paint(); }));
 
       picker.addEventListener('click', (e) => {
+        // "+ Nova categoria": cria a categoria (já no tipo atual) e a deixa selecionada.
+        if (e.target.closest('[data-add-cat]')) {
+          openCategoryModal(null, {
+            type,
+            onSaved: (cat) => { categoryId = cat.id; error.hidden = true; paint(); },
+          });
+          return;
+        }
         const b = e.target.closest('[data-cat]');
         if (!b) return;
         categoryId = b.dataset.cat;

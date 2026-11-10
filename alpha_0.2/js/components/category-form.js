@@ -9,7 +9,10 @@ export const CATEGORY_COLORS = [
   '#7c4ddb', '#c34fd6', '#e8608f', '#e5484d', '#f28c38', '#f2b631', '#8a8aa3',
 ];
 
-/** Modal de criar/editar categoria. */
+/**
+ * Modal de criar/editar categoria.
+ * `defaults.onSaved(categoria)` é chamado depois de salvar (usado no formulário de transação).
+ */
 export function openCategoryModal(cat = null, defaults = {}) {
   const editing = Boolean(cat);
   const data = {
@@ -95,10 +98,16 @@ export function openCategoryModal(cat = null, defaults = {}) {
         const duplicate = categoriesOf(data.type).some((c) => c.id !== cat?.id && normalize(c.name) === normalize(name));
         if (duplicate) return fail('Já existe uma categoria com esse nome.');
 
-        if (editing) store.updateCategory(cat.id, { name, color: data.color, icon: data.icon });
-        else store.addCategory({ name, type: data.type, color: data.color, icon: data.icon });
+        let saved;
+        if (editing) {
+          store.updateCategory(cat.id, { name, color: data.color, icon: data.icon });
+          saved = store.state.categories.find((c) => c.id === cat.id);
+        } else {
+          saved = store.addCategory({ name, type: data.type, color: data.color, icon: data.icon });
+        }
         toast(editing ? 'Categoria atualizada' : 'Categoria criada');
         close();
+        defaults.onSaved?.(saved);
       });
 
       paint();

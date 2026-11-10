@@ -453,6 +453,8 @@ textarea.input { height: auto; padding: 12px 14px; resize: vertical; }
 .cat-option:hover { background: var(--row-hover); }
 .cat-option.selected { border-color: var(--c); background: color-mix(in srgb, var(--c) 12%, white); }
 .cat-option .tx-icon { width: 36px; height: 36px; border-radius: 11px; background: #fff; }
+.cat-option.cat-add { background: transparent; border: 2px dashed #d3cff0; color: var(--muted); --c: var(--primary); }
+.cat-option.cat-add:hover { border-color: var(--primary); background: #f5eeff; color: var(--text); }
 
 .cat-preview { display: flex; align-items: center; gap: 14px; padding: 14px; border-radius: var(--radius-md); background: var(--row); }
 .cat-preview strong { display: block; font-size: 17px; }
