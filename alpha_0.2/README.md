@@ -24,6 +24,7 @@ Depois acesse http://localhost:8080. A extensão **Live Server** do VS Code tamb
 - Nova categoria de despesa **Cartão de crédito**.
 - Nova categoria de despesa **Investimentos**, para registrar quanto você investe por mês (aportes). A categoria de receita "Investimentos" continua existindo para rendimentos.
 - A importação de CSV sugere essas categorias automaticamente (ex.: "Pagamento de fatura", "Aplicação CDB").
+- Botão **"+ Nova categoria"** no formulário de transação: cria a categoria sem sair do lançamento e já a deixa selecionada.
 - Quem já usava a 0.1 mantém os dados: as duas categorias novas são adicionadas automaticamente na primeira abertura.
 
 ## O que já funciona
